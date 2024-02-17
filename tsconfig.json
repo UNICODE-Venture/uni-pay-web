@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "es5",
+    "declaration": true,
+    "outDir": "./lib",
+    "strict": true,
+    // "lib": ["dom", "dom.iterable", "esnext"],
+    // "allowJs": true,
+    // "skipLibCheck": true,
+    // "strict": true,
+    // "forceConsistentCasingInFileNames": true,
+    // "noEmit": true,
+    // "esModuleInterop": true,
+    // "module": "esnext",
+    // "moduleResolution": "node",
+    // "resolveJsonModule": true,
+    // "isolatedModules": true,
+    // "jsx": "preserve",
+    // "incremental": true,
+    // "plugins": [
+    //   {
+    //     "name": "next"
+    //   }
+    // ],
+    "paths": {
+      "@/*": ["./*"]
+      // "@unipayextension": ["./src/core/extension/types.ts"]
+    }
+  },
+  "include": ["src/**/*", "**__tests__/*"],
+  "exclude": ["node_modules"]
+}

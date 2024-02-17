@@ -1,0 +1,40 @@
+{
+  "name": "uni-pay-web",
+  "version": "1.0.0",
+  "description": "A library for making online payment by using Moyasar payment gateway",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UNICODE-Venture/uni-pay-web.git"
+  },
+  "keywords": [
+    "uni-pay",
+    "moyasar",
+    "tamara",
+    "tabby",
+    "unicode",
+    "uni-pay-web",
+    "saif",
+    "mohammadsaif"
+  ],
+  "author": "UNICODE-SA",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UNICODE-Venture/uni-pay-web/issues"
+  },
+  "homepage": "https://github.com/UNICODE-Venture/uni-pay-web#readme",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.7"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}
