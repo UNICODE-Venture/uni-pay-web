@@ -1,23 +1,40 @@
-# uni-pay
+# UniPay
 
-# Moyasar Payment by **UNICODE Team**
+## Moyasar Payment by **UNICODE Team**
 
 A library for making online payment by using Moyasar payment gateway developed by **UNICODE Team**.
 
-# **Features support**
+## **Features support**
 
-![Payment](https://raw.githubusercontent.com/UNICODE-Venture/unicode-moyasar/main/assets/images/cards.png)
+<img src="https://raw.githubusercontent.com/UNICODE-Venture/unicode-moyasar/main/assets/images/cards.png" height=50 alt="UniPay Payment" />
 
-- **Card support (_mada_, visa, mastercard)**
 - **Apple Pay**
+- **Card support (_Mada_, _Visa_, and _Mastercard_)**
 - **stc pay**
 
-![Payment View](https://raw.githubusercontent.com/UNICODE-Venture/unicode-moyasar/main/assets/screenshots/sc.png)
+<img src="https://raw.githubusercontent.com/UNICODE-Venture/unicode-moyasar/main/assets/screenshots/sc.png" width=200, height=300 alt="UniPay" />
 
-## Getting started
+#### Getting started and initiate your payment
 
 ```typescript
 UniPay.__initiateUniPayment({
+  uniPayConfig: new UniPayConfig({
+    psKey: "pk_test_key",
+    sKey: "sk_test_key",
+    environment: UniPayEnv.staging,
+    redirectUrl: "https://your-website.com",
+    totalAmountWithVat: 150.45,
+    businessName: "Your company name",
+    description: "Description of the order",
+    locale: UniPayLocale.ar,
+  }),
+});
+```
+
+#### Verify transaction by the callback url.
+
+```typescript
+UniPay.__verifyPaymentTransaction({
   uniPayConfig: new UniPayConfig({
     psKey: "pk_test_key",
     sKey: "sk_test_key",
