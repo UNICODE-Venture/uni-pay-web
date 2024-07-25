@@ -5,6 +5,17 @@ enum UniPayStatus {
   notSpecified = "notSpecified",
 }
 
+enum UniPayCurrency {
+  /** [sar] is the currency for Saudi Riyal. */
+  sar = "SAR",
+
+  /** [usd] is the currency for United States Dollar. */
+  usd = "USD",
+
+  /** [omr] is the currency for Omani Riyal. */
+  omr = "OMR",
+}
+
 /** Local Saudi Online Payment System `[Mada, Visa, MasterCard, ApplePay, stcpay]` */
 enum UniPayOption {
   mada = "mada",
@@ -12,6 +23,7 @@ enum UniPayOption {
   mastercard = "mastercard",
   applepay = "applepay",
   stcpay = "stcpay",
+  amex = "amex",
   notSpecified = "notSpecified",
 }
 
@@ -23,8 +35,8 @@ enum UniPayEnv {
 
 /** Locale of Payment */
 enum UniPayLocale {
-  ar,
-  en,
+  ar = "ar",
+  en = "en",
 }
 
 /** Types of Logs */
@@ -35,11 +47,20 @@ enum LogType {
   default,
 }
 
-export { UniPayStatus, UniPayOption, UniPayEnv, UniPayLocale, LogType };
+export {
+  UniPayStatus,
+  UniPayOption,
+  UniPayEnv,
+  UniPayLocale,
+  LogType,
+  UniPayCurrency,
+};
 
 export class PaymentEnumsHelper {
   /** Get the type of Payment options used */
   static getPaymentOptionType(type = UniPayOption.notSpecified): UniPayOption {
+    // MasterCard is also known as master, new changes in the API
+    if (type.isEqualTo("master")) return UniPayOption.mastercard;
     switch (type) {
       case "mada":
         return UniPayOption.mada;
@@ -47,10 +68,14 @@ export class PaymentEnumsHelper {
         return UniPayOption.visa;
       case "mastercard":
         return UniPayOption.mastercard;
+      case "mastercard":
+        return UniPayOption.mastercard;
       case "applepay":
         return UniPayOption.applepay;
       case "stcpay":
         return UniPayOption.stcpay;
+      case "amex":
+        return UniPayOption.amex;
       default:
         return UniPayOption.notSpecified;
     }

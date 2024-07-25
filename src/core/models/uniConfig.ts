@@ -4,21 +4,22 @@ import PaymentResModel from "./paymentRes";
 import "../extension/types";
 
 interface IUniPayConfig {
-  psKey: string;
   /** Secret key from the [Moyasar] */
   sKey: string;
+  /** @deprecated Publishable secret key from the [Moyasar] */
+  psKey: string;
   /** The environment to use `[UniPayEnv.production, UniPayEnv.staging]` */
   environment: UniPayEnv;
-  /** The redirect url after the payment is done */
+  /** @deprecated The redirect url after the payment is done */
   redirectUrl: string;
-  /** The total amount with Tax of 15% */
+  /** @deprecated The total amount with Tax of 15% */
   totalAmountWithVat: number;
-  /** The name of your business registered */
+  /** @deprecated The name of your business registered */
   businessName: string;
-  /** Description for the transaction */
+  /** @deprecated Description for the transaction */
   description?: string;
   /** Locale of payment to show the cusmozied UI default is `[PaymentLocale.ar]`  */
-  locale?: UniPayLocale;
+  locale: UniPayLocale;
 }
 
 /**
@@ -31,17 +32,17 @@ interface IUniPayConfig {
  *  @locale Locale of payment to show the cusmozied UI default is `[PaymentLocale.ar]`
  *  */
 export default class UniPayConfig implements IUniPayConfig {
-  psKey: string;
   sKey: string;
+  psKey: string;
   environment: UniPayEnv;
   redirectUrl: string;
   totalAmountWithVat: number;
   businessName: string;
   description?: string;
-  locale?: UniPayLocale;
+  locale: UniPayLocale;
 
   constructor({
-    psKey: pKey,
+    psKey,
     sKey,
     environment,
     redirectUrl,
@@ -49,13 +50,13 @@ export default class UniPayConfig implements IUniPayConfig {
     businessName,
     description,
     locale = UniPayLocale.ar,
-  }: IUniPayConfig) {
-    this.psKey = pKey;
+  }: Partial<IUniPayConfig> & Required<Pick<IUniPayConfig, "sKey">>) {
+    this.psKey = psKey ?? "";
     this.sKey = sKey;
-    this.environment = environment;
-    this.redirectUrl = redirectUrl;
-    this.totalAmountWithVat = totalAmountWithVat;
-    this.businessName = businessName;
+    this.environment = environment ?? UniPayEnv.production;
+    this.redirectUrl = redirectUrl ?? "";
+    this.totalAmountWithVat = totalAmountWithVat ?? 0;
+    this.businessName = businessName ?? "";
     this.description = description || businessName;
     this.locale = locale;
   }
@@ -98,5 +99,10 @@ export default class UniPayConfig implements IUniPayConfig {
       }
     }
     return;
+  }
+  /** Get Header Authorization Secret Key */
+  get authorizationPSKey() {
+    const authKey = `Basic ${`${this.psKey}:`.toBase64()}`;
+    return authKey;
   }
 }

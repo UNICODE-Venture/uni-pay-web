@@ -1,5 +1,4 @@
-import { UniPayOption, UniPayStatus } from "../enums";
-import PaymentResModel from "./paymentRes";
+import { UniPayCurrency, UniPayOption, UniPayStatus } from "../enums";
 import PaymentSource from "./paymentSource";
 
 interface IPaymentTransactionModel {
@@ -7,7 +6,7 @@ interface IPaymentTransactionModel {
   paymentStatus: UniPayStatus;
   amount: number;
   fee: number;
-  currency: string;
+  currency: UniPayCurrency;
   description: string;
   amountFormatted: string;
   ip: string;
@@ -21,7 +20,7 @@ class PaymentTransactionModel implements IPaymentTransactionModel {
   paymentStatus: UniPayStatus;
   amount: number;
   fee: number;
-  currency: string;
+  currency: UniPayCurrency;
   description: string;
   amountFormatted: string;
   ip: string;
@@ -56,16 +55,17 @@ class PaymentTransactionModel implements IPaymentTransactionModel {
   }
 
   /** From Res To Model */
-  static fromJson(res: any, paymenrRes: PaymentResModel) {
+  static fromJson(res: any, transactionId: string) {
+    console.log("Payment res: ", res);
     return new PaymentTransactionModel({
-      transactionId: res.id ?? paymenrRes.transactionId,
+      transactionId: res.id ?? transactionId,
       paymentStatus:
         res.id && res.status === "paid"
           ? UniPayStatus.success
           : UniPayStatus.failed,
       amount: (res.amount ?? 0) / 100,
       fee: (res.fee ?? 0) / 100,
-      currency: res.currency ?? "SAR",
+      currency: res.currency ?? UniPayCurrency.sar,
       description: res.description ?? "",
       amountFormatted: res.amountFormatted ?? "0.00 SAR",
       ip: res.ip ?? "0.0.0.0",
@@ -99,9 +99,16 @@ class PaymentTransactionModel implements IPaymentTransactionModel {
     );
   }
 
+  /** Get the payment type used in the transaction
+   * @returns {UniPayOption} - The payment type used in the transaction
+   */
+  get paymentType(): UniPayOption {
+    return this.source.paymentType;
+  }
+
   /** Is used `Apple Pay` */
   isApplePay(): boolean {
-    return this.source.paymentType === UniPayOption.applepay;
+    return this.paymentType === UniPayOption.applepay;
   }
 
   /** Empty model instance */
@@ -111,7 +118,7 @@ class PaymentTransactionModel implements IPaymentTransactionModel {
       paymentStatus: UniPayStatus.failed,
       amount: 0,
       fee: 0,
-      currency: "SAR",
+      currency: UniPayCurrency.sar,
       description: "",
       amountFormatted: "0.00 SAR",
       ip: "",

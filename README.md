@@ -1,59 +1,60 @@
-# UniPay
+# Payment Gateway Library Crafted by the **[UNICODE Team](https://www.unicodesolutions.co/).**
 
-## Moyasar Payment by **UNICODE Team**
-
-A library for making online payment by using Moyasar payment gateway developed by **UNICODE Team**.
+A lightweight library for processing online payments and generating invoices with Moyasar, providing seamless payment info retrieval as well (🇸🇦💙🇧🇩❤️🇪🇬).
 
 ## **Features support**
 
 <img src="https://raw.githubusercontent.com/UNICODE-Venture/unicode-moyasar/main/assets/images/cards.png" height=50 alt="UniPay Payment" />
 
 - **Apple Pay**
-- **Card support (_Mada_, _Visa_, and _Mastercard_)**
+- **Card support (_Mada_, _Visa_, _AMEX_ and _Mastercard_)**
 - **stc pay**
 
 <img src="https://raw.githubusercontent.com/UNICODE-Venture/unicode-moyasar/main/assets/screenshots/sc.png" width=200, height=300 alt="UniPay" />
 
-#### Getting started and initiate your payment
+#### Getting started and make your payment using the gateway.
 
 ```typescript
-UniPay.__initiateUniPayment({
-  uniPayConfig: new UniPayConfig({
-    psKey: "pk_test_key",
+UniPay.makePayment({
+  config: new UniPayConfig({
     sKey: "sk_test_key",
     environment: UniPayEnv.staging,
-    redirectUrl: "https://your-website.com",
-    totalAmountWithVat: 150.45,
-    businessName: "Your company name",
-    description: "Description of the order",
     locale: UniPayLocale.ar,
+  }),
+  paymentData: new UniPayInvoiceDTO({
+    amount: 150.99 * 100, // (150.99 * 100) because 1 sr == 100 Halala's.
+    currency: UniPayCurrency.sar,
+    description: "Test payment",
+    expiredAt: "expiredAt - optional",
+    successUrl: "https://your-website.com/success",
+    backUrl: "https://your-website.com/back",
+    metadata: {
+      product_name: "your-product-name",
+      product_id: "abc123",
+    },
   }),
 });
 ```
 
-#### Verify transaction by the callback url.
+#### Get payment transaction details from Moyasar using the paymentId or transactionId
 
 ```typescript
-UniPay.__verifyPaymentTransaction({
-  uniPayConfig: new UniPayConfig({
-    psKey: "pk_test_key",
+UniPay.getPaymentTransactionById({
+  config: new UniPayConfig({ sKey: "sk_test_key" }),
+  transactionId: "abc12345",
+});
+```
+
+#### Verify transaction from the callback url using the query-params, by your own if needed.
+
+```typescript
+UniPay.verifyPaymentByQueryParams({
+  config: new UniPayConfig({
     sKey: "sk_test_key",
-    environment: UniPayEnv.staging,
-    redirectUrl: "https://your-website.com",
-    totalAmountWithVat: 150.45,
-    businessName: "Your company name",
-    description: "Description of the order",
-    locale: UniPayLocale.ar,
+    urlSearchParams:
+      "Optional: you can provide your own query-params, otherwise it will use the current url as default.",
   }),
 });
 ```
 
-# Apple pay Setup
-
-- In order to use Apple Pay within your project, you first need to add our domain in **Apple Pay - domains** settings in your **Moyasar Dashboard**.
-
-- Please visit their [official docs](https://moyasar.com/docs/dashboard/apple-pay/web-registration/) to read more about how to add the domain for **Apple pay**.
-
-```dart
- unicode-moyasar.web.app
-```
+#### If you enjoyed it, then give it a star ⭐️ and like 👍🏻 and for more arts & crafts 🎨 from our team kindly visit here [Team UNICODE](https://pub.dev/publishers/unicodesolutions.co/packages). Until next time, keep coding and stay awesome 😉

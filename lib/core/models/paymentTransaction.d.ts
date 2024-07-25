@@ -1,12 +1,11 @@
-import { UniPayOption, UniPayStatus } from "../enums";
-import PaymentResModel from "./paymentRes";
+import { UniPayCurrency, UniPayOption, UniPayStatus } from "../enums";
 import PaymentSource from "./paymentSource";
 interface IPaymentTransactionModel {
     transactionId: string;
     paymentStatus: UniPayStatus;
     amount: number;
     fee: number;
-    currency: string;
+    currency: UniPayCurrency;
     description: string;
     amountFormatted: string;
     ip: string;
@@ -19,7 +18,7 @@ declare class PaymentTransactionModel implements IPaymentTransactionModel {
     paymentStatus: UniPayStatus;
     amount: number;
     fee: number;
-    currency: string;
+    currency: UniPayCurrency;
     description: string;
     amountFormatted: string;
     ip: string;
@@ -28,14 +27,14 @@ declare class PaymentTransactionModel implements IPaymentTransactionModel {
     source: PaymentSource;
     constructor({ transactionId, paymentStatus, amount, fee, currency, description, amountFormatted, ip, createdAt, invoiceId, source, }: IPaymentTransactionModel);
     /** From Res To Model */
-    static fromJson(res: any, paymenrRes: PaymentResModel): PaymentTransactionModel;
+    static fromJson(res: any, transactionId: string): PaymentTransactionModel;
     /** Model To Json */
     toJson(): {
         transactionId: string;
         paymentStatus: UniPayStatus;
         amount: number;
         fee: number;
-        currency: string;
+        currency: UniPayCurrency;
         description: string;
         amountFormatted: string;
         ip: string;
@@ -53,6 +52,10 @@ declare class PaymentTransactionModel implements IPaymentTransactionModel {
     };
     /** Is Payment Successfull */
     get isPaymentSuccessfull(): boolean;
+    /** Get the payment type used in the transaction
+     * @returns {UniPayOption} - The payment type used in the transaction
+     */
+    get paymentType(): UniPayOption;
     /** Is used `Apple Pay` */
     isApplePay(): boolean;
     /** Empty model instance */
